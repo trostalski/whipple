@@ -29,7 +29,7 @@ Change into the `src` directory and dtart the [fast-api](https://fastapi.tiangol
 uvicorn app.main:main --host 0.0.0.0 --port 8000 --reload
 ```
 
-**frontend**
+**frontend**:
 
 Change into the [client](./webapp/client) directory.
 
