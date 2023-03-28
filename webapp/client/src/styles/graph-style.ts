@@ -1,5 +1,3 @@
-import { Edge } from "../types";
-
 export const GetGraphStyle = (resourceId: string) => {
   return [
     {

@@ -1,11 +1,10 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React from "react";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router";
 import LogoutButton from "../components/buttons/LogoutButton";
 import { toastPromise } from "../components/toasts";
 import { useWorkspaces } from "../hooks/useWorkspaces";
-import { shallow } from "zustand/shallow";
 
 const Workspaces = () => {
   const [workspaceName, setWorkspaceName] = React.useState<string>("");
