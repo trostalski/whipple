@@ -1,0 +1,38 @@
+# Use root/example as user/password credentials
+version: "3.1"
+services:
+  client:
+    container_name: client
+    env_file:
+      - ./docker.env
+    build:
+      context: ./webapp/client
+    ports:
+      - 3000:3000
+  db:
+    image: postgres
+    env_file:
+      - ./docker.env
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  server:
+    container_name: server
+    env_file:
+      - ./docker.env
+    depends_on:
+      db:
+        condition: service_healthy
+    build:
+      context: ./webapp/server
+    command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    ports:
+      - 8000:8000
+volumes:
+    postgres:
