@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
-import ApiImport from "../old/ApiImport";
 import FileImport from "../components/home/FileImport";
 import ModalWrapper from "../components/ModalWrapper";
 import { toastPromise } from "../components/toasts";
@@ -39,12 +38,6 @@ const ImportDataModal = (props: ImportDataModalProps) => {
   switch (props.importMethod) {
     case "file":
       modalElement = <FileImport setShow={props.setShow} />;
-      break;
-    case "api":
-      modalElement = <ApiImport setShow={props.setShow} />;
-      break;
-    case "server":
-      modalElement = <ImportFromServer />;
       break;
     default:
       break;
