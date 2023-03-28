@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import Search from "./pages/Search";
 import NoPage from "./pages/NoPage";
-import Explorer from "./pages/Explorer";
 import Dashboard from "./pages/Dashboard";
 import Datasets from "./pages/Datasets";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -39,7 +38,6 @@ const App = () => {
             <Route path="/settings" element={<Settings />} />
             <Route path="/exports" element={<Exports />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/explorer" element={<Explorer />} />
             <Route path="/search" element={<Search />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

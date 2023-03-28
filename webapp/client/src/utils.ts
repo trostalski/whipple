@@ -1,6 +1,4 @@
 import { Bundle, Resource } from "fhir/r4";
-import { fetchUrl } from "./api/graph-data";
-import { Row } from "./old/old_search/SearchTable";
 
 export const encodeResourceId = (resourceId: string) => {
   return resourceId.replace("/", "_");
@@ -56,19 +54,6 @@ export const arrayToOptions = (input: string[]) => {
   return result;
 };
 
-export const bundleToTableData = (bundle: Bundle) => {
-  const data: Row[] = [];
-  bundle.entry?.map((entry) => {
-    const displayValues = getDisplaysForResource(entry.resource);
-    data.push({
-      id: entry.resource?.id!,
-      resourceType: entry.resource?.resourceType!,
-      display: displayValues,
-    });
-  });
-  return data;
-};
-
 export function* getValuesForKeyGen(
   resource: any,
   target: string = "display"
@@ -103,22 +88,6 @@ export const getBundleLinkByRelation = (bundle: Bundle, relation: string) => {
     }
   });
   return result;
-};
-
-export const getFullDataFromBundleUrl = async (url: string) => {
-  console.log("downloading… ");
-  let resultBundle: Bundle = await fetchUrl(url);
-  let nextLink: string | undefined = getBundleLinkByRelation(
-    resultBundle,
-    "next"
-  );
-
-  while (nextLink) {
-    const newBundle: Bundle = await fetchUrl(nextLink);
-    nextLink = getBundleLinkByRelation(newBundle, "next");
-    resultBundle.entry = resultBundle.entry!.concat(newBundle.entry!);
-  }
-  return resultBundle;
 };
 
 export const removeBlanksFromObject = (obj: any) => {
