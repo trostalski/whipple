@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
-import ApiImport from "../components/home/ApiImport";
+import ApiImport from "../old/ApiImport";
 import FileImport from "../components/home/FileImport";
 import ModalWrapper from "../components/ModalWrapper";
 import { toastPromise } from "../components/toasts";

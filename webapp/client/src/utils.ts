@@ -1,7 +1,6 @@
 import { Bundle, Resource } from "fhir/r4";
 import { fetchUrl } from "./api/graph-data";
-import { Row } from "./components/old_search/SearchTable";
-import searchParams from "./downloads/search-parameters.json";
+import { Row } from "./old/old_search/SearchTable";
 
 export const encodeResourceId = (resourceId: string) => {
   return resourceId.replace("/", "_");
@@ -44,23 +43,6 @@ export const formatDateString = (inputDate: string) => {
   if (!(localDateString === "Invalid Date")) {
     result = localDateString;
   }
-  return result;
-};
-
-export const getSearchParamsForResource = (resourceType: string) => {
-  const entries = searchParams["entry"].filter(
-    (item) =>
-      item.resource.base.includes(resourceType) ||
-      item.resource.base.includes("Resource")
-  );
-  const result: { name: string; comparators?: string[]; value: string }[] = [];
-  entries.map((entry) =>
-    result.push({
-      name: entry.resource.name,
-      comparators: entry.resource.comparator,
-      value: "",
-    })
-  );
   return result;
 };
 

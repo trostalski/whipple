@@ -1,13 +1,13 @@
 import { Bundle } from "fhir/r4";
 import React, { useReducer, useState } from "react";
 import { fetchSearchServer, fetchUrl } from "../api/graph-data";
-import ResourceSelection from "../components/old_search/ResourceSelection";
+import ResourceSelection from "../old/old_search/ResourceSelection";
 import searchReducer, {
   JoinOptions,
   SearchState,
   SearchTypes,
-} from "../components/old_search/SearchReducer";
-import SearchTable, { Row } from "../components/old_search/SearchTable";
+} from "../old/old_search/SearchReducer";
+import SearchTable, { Row } from "../old/old_search/SearchTable";
 import Wrapper from "../components/Wrapper";
 import {
   bundleToTableData,

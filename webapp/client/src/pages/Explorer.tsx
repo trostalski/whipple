@@ -8,7 +8,7 @@ import React, {
 import Timeline from "../components/explorer/Timeline";
 import { CytoscapeElements } from "../types";
 import { encodeResourceId } from "../utils";
-import CyGraph from "../components/explorer/cy-graph/CyGraph";
+import CyGraph from "../old/cy-graph/CyGraph";
 import ResourceOverview from "../components/explorer/ResourceOverview";
 import Select from "react-select";
 import { resourceOptions } from "../constants";

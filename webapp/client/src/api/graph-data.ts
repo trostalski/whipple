@@ -1,4 +1,4 @@
-import { SearchState } from "../components/old_search/SearchReducer";
+import { SearchState } from "../old/old_search/SearchReducer";
 
 export const fetchUrl = async (url: string) => {
   {
