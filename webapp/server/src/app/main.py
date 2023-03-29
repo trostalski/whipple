@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 import alembic.config
+from sqlalchemy import text
 
 from app.api.api_v1.api import api_router
 from app.core.config import settings
@@ -13,7 +14,7 @@ app = FastAPI(
 # create database tables if not exists
 try:
     db = SessionLocal()
-    db.execute("SELECT 1")
+    db.execute(text("SELECT 1 from users LIMIT 1"))
 except Exception as e:
     print("Database tables not created yet, creating them now...")
     alembic.config.main(argv=["revision", "--autogenerate", "-m", "Initial migration"])
