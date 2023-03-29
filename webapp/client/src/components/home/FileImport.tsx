@@ -8,9 +8,7 @@ export type Metadata = {
   description?: string;
 };
 
-interface FileImportProps {
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface FileImportProps {}
 
 const FileImport = (props: FileImportProps) => {
   const [files, setFiles] = useState<FileList | null>(null);
@@ -61,12 +59,10 @@ const FileImport = (props: FileImportProps) => {
       };
     });
     setFiles(null);
-    props.setShow(false);
   };
 
   const handleCancel = () => {
     setFiles(null);
-    props.setShow(false);
   };
 
   return (
@@ -98,7 +94,7 @@ const FileImport = (props: FileImportProps) => {
         ></textarea>
       </div>
       <div className="flex relative flex-col grow items-center justify-center w-full">
-      <label className="text-sm font-light self-start">Selected Files</label>
+        <label className="text-sm font-light self-start">Selected Files</label>
         <label className="flex overflow-scroll flex-col items-center justify-center w-full h-52 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
           <div className="self-start place-self-start justify-self-start">
             {!files
