@@ -1,45 +1,40 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
+from retry import retry
 from psycopg2.errors import UniqueViolation
+
 from app.models.condition_data import ConditionData
 from app.models.observation_data import ObservationData
-
 from app.schemas.dataset import DatasetIn, DatasetOut
 from app.models.dataset import Dataset
 from app.models.reference import Reference
 from app.models.resource import Resource
 
 
+@retry(UniqueViolation, tries=10, delay=1)
 def create_dataset(db: Session, dataset_in: DatasetIn, workspace_id: int):
-    retries = 0
-    while retries < 5:
-        try:
-            db_dataset = (
-                db.query(Dataset)
-                .filter(
-                    and_(
-                        Dataset.title == dataset_in.title,
-                        Dataset.workspace_id == workspace_id,
-                    )
-                )
-                .first()
+    db_dataset = (
+        db.query(Dataset)
+        .filter(
+            and_(
+                Dataset.title == dataset_in.title,
+                Dataset.workspace_id == workspace_id,
             )
-            if db_dataset:
-                return db_dataset
-            db_dataset = Dataset(
-                title=dataset_in.title,
-                description=dataset_in.description,
-                workspace_id=workspace_id,
-            )
-            db.add(db_dataset)
-            db.commit()
-            db.refresh(db_dataset)
-            break
-        except UniqueViolation:
-            retries += 1
-            print("UniqueViolation retrying to create dataset...")
-            continue
-    return db_dataset
+        )
+        .first()
+    )
+    if db_dataset:
+        return db_dataset
+    else:
+        db_dataset = Dataset(
+            title=dataset_in.title,
+            description=dataset_in.description,
+            workspace_id=workspace_id,
+        )
+        db.add(db_dataset)
+        db.commit()
+        db.refresh(db_dataset)
+        return db_dataset
 
 
 def get_dataset_by_id(db: Session, dataset_id: int):
