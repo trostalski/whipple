@@ -43,3 +43,7 @@ Start the [React](https://react.dev/) frontend:
 ```shell
 npm run start
 ```
+
+### Contributing
+
+Contributions of all kinds are very much welcome.
