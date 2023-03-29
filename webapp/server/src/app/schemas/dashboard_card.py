@@ -3,7 +3,6 @@ from pydantic import BaseModel
 from datetime import datetime
 from enum import Enum
 
-from app.schemas.condition_data import ConditionData
 from app.schemas.observation_data import ObservationData
 
 

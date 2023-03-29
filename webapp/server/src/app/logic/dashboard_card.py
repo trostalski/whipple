@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 import numpy as np
 
 from app import models, schemas
-from app.logic.constants import ALL_CODE
+from app.schemas.observation_data import ValueTypes
 
 
 def create_dashboard_card(
@@ -182,18 +182,19 @@ def get_observation_data_for_boxplot(
     unit = None
     datasets = [{"data": []}]
     labels = []
-    for items, target in zip(db_data, dashboard_card.targets):
+    for db_observation_data, target in zip(db_data, dashboard_card.targets):
         labels.append(target)
-        if len(items) == 0:
+        if len(db_observation_data) == 0:
             datasets[0]["data"].append({})
             continue
         values = np.asarray(
             [
                 float(d.value)
-                for d in items
-                if d.value is not None and d.value.isnumeric()
+                for d in db_observation_data
+                if d.value is not None and d.value_type == ValueTypes.numeric
             ]
         )
+        print(values)
         if len(values) == 0:
             datasets[0]["data"].append({})
             continue
@@ -212,7 +213,9 @@ def get_observation_data_for_boxplot(
             "mean": mean,
         }
         datasets[0]["data"].append(data)
-        units = [d.unit for d in items if d.unit is not None and unit is None]
+        units = [
+            d.unit for d in db_observation_data if d.unit is not None and unit is None
+        ]
         if len(units) > 0:
             unit = units[0]
     return {"labels": labels, "datasets": datasets, "unit": unit}

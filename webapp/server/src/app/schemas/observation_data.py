@@ -1,5 +1,11 @@
 from typing import Optional
 from pydantic import BaseModel
+from enum import Enum
+
+
+class ValueTypes(str, Enum):
+    numeric = "numeric"
+    categorical = "categorical"
 
 
 class ObservationData(BaseModel):
@@ -13,3 +19,4 @@ class ObservationData(BaseModel):
 
     class Config:
         orm_mode = True
+        use_enum_values = True
