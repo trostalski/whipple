@@ -6,11 +6,14 @@ interface DatasetImportModalProps {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ImportDataModal = (method: string) => {
+const ImportDataModal = (
+  method: string,
+  setShow: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   let modalElement;
   switch (method) {
     case "File":
-      modalElement = <FileImport />;
+      modalElement = <FileImport setShow={setShow} />;
       break;
     default:
       break;
@@ -41,7 +44,7 @@ const DatasetImportModal = (props: DatasetImportModalProps) => {
             </button>
           ))}
         </div>
-        {ImportDataModal(importMethod)}
+        {ImportDataModal(importMethod, props.setShow)}
       </div>
     </ModalWrapper>
   );

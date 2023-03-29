@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import and_
-from retry import retry
+from sqlalchemy import exc
 from psycopg2.errors import UniqueViolation
 
 from app.models.condition_data import ConditionData
@@ -11,37 +10,43 @@ from app.models.reference import Reference
 from app.models.resource import Resource
 
 
-@retry(UniqueViolation, tries=10, delay=1)
-def create_dataset(db: Session, dataset_in: DatasetIn, workspace_id: int):
-    db_dataset = (
-        db.query(Dataset)
-        .filter(
-            and_(
-                Dataset.title == dataset_in.title,
-                Dataset.workspace_id == workspace_id,
-            )
-        )
-        .first()
+def create_dataset(db: Session, dataset_in: DatasetIn, workspace_id: int) -> Dataset:
+    db_dataset = Dataset(
+        title=dataset_in.title,
+        description=dataset_in.description,
+        workspace_id=workspace_id,
     )
-    if db_dataset:
-        return db_dataset
-    else:
-        db_dataset = Dataset(
-            title=dataset_in.title,
-            description=dataset_in.description,
-            workspace_id=workspace_id,
-        )
-        db.add(db_dataset)
-        db.commit()
-        db.refresh(db_dataset)
-        return db_dataset
+    db.add(db_dataset)
+    db.commit()
+    db.refresh(db_dataset)
+    return db_dataset
 
 
-def get_dataset_by_id(db: Session, dataset_id: int):
+def try_create_dataset(db: Session, dataset_in: DatasetIn, workspace_id: int):
+    """Try to create a dataset. If it already exists, return the existing dataset."""
+    try:
+        return create_dataset(db, dataset_in, workspace_id)
+    except (exc.IntegrityError, UniqueViolation):
+        db.rollback()
+        return get_dataset_by_title(db, dataset_in.title, workspace_id)
+
+
+def get_dataset_by_id(db: Session, dataset_id: int) -> Dataset:
     return db.get(Dataset, dataset_id)
 
 
-def get_datasets(db: Session, workspace_id: int, skip: int = 0, limit: int = 100):
+def get_dataset_by_title(db: Session, title: str, workspace_id: int) -> Dataset:
+    return (
+        db.query(Dataset)
+        .filter(Dataset.title == title)
+        .filter(Dataset.workspace_id == workspace_id)
+        .first()
+    )
+
+
+def get_datasets(
+    db: Session, workspace_id: int, skip: int = 0, limit: int = 100
+) -> list[Dataset]:
     datasets = (
         db.query(Dataset)
         .filter(Dataset.workspace_id == workspace_id)
@@ -52,7 +57,7 @@ def get_datasets(db: Session, workspace_id: int, skip: int = 0, limit: int = 100
     return datasets
 
 
-def update_dataset(db: Session, db_dataset: Dataset, dataset_in: DatasetIn):
+def update_dataset(db: Session, db_dataset: Dataset, dataset_in: DatasetIn) -> Dataset:
     for key, value in dataset_in:
         if value is not None:
             setattr(db_dataset, key, value)
@@ -70,7 +75,7 @@ def delete_dataset(db: Session, db_dataset: Dataset) -> None:
 
 def get_resource_ids_by_dataset_id(
     db: Session, dataset_id: int, limit: int, resource_type: str = None
-):
+) -> list[str]:
     if resource_type:
         resource_ids = (
             db.query(Resource.resource_id)
@@ -90,7 +95,7 @@ def get_resource_ids_by_dataset_id(
     return resource_ids
 
 
-def get_distinct_observations_for_dataset(db: Session, dataset_id):
+def get_distinct_observations_for_dataset(db: Session, dataset_id) -> list[str]:
     result = (
         db.query(ObservationData.display)
         .filter(ObservationData.dataset_id == dataset_id)

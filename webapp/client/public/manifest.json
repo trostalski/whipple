@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Whipple",
+  "name": "Data analysis for your FHIR data",
   "icons": [],
   "start_url": ".",
   "display": "standalone",

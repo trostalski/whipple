@@ -157,7 +157,7 @@ def create_bundle_with_dataset(
     dataset_in: DatasetIn,
     workspace_id: int,
 ):
-    db_dataset = dataset.create_dataset(db, dataset_in, workspace_id)
+    db_dataset = dataset.try_create_dataset(db, dataset_in, workspace_id)
     bundle_entry = bundle_in.entry
     for entry in bundle_entry:
         fullurl = entry.fullUrl if entry.fullUrl else None
