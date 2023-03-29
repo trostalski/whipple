@@ -1,9 +1,14 @@
 import React from "react";
-import { defaultInputData } from "../components/dashboard/constants";
-import CardModal from "../components/dashboard/CardModal";
+import {
+  defaultInputData,
+  defaultSpecimentOptions,
+  defaultTargetOptions,
+} from "../components/dashboard/constants";
+import DashboardCardModal from "../components/dashboard/DashboardCardModal";
 import DashboardCard from "../components/dashboard/DashboardCard";
 import Wrapper from "../components/Wrapper";
 import { useDashboardCards } from "../hooks/useDashboardCards";
+import { useDistinctObservationNames } from "../hooks/useDistinctObservationNames";
 
 const Dashboard = () => {
   const [cardModalIsOpen, setCardModalIsOpen] = React.useState(false);
@@ -29,7 +34,7 @@ const Dashboard = () => {
         {data && data.length > 0 ? (
           <div className="grid grid-cols-2 gap-8">
             {data.map((card) => {
-              return <DashboardCard key={card.id} card={card} />;
+              return <DashboardCard key={card.id} cardData={card} />;
             })}
           </div>
         ) : (
@@ -39,10 +44,12 @@ const Dashboard = () => {
         )}
       </div>
       {cardModalIsOpen ? (
-        <CardModal
+        <DashboardCardModal
           setShow={setCardModalIsOpen}
           mode="create"
           inputData={defaultInputData}
+          specimenOptions={defaultSpecimentOptions}
+          targetOptions={defaultTargetOptions}
         />
       ) : null}
     </Wrapper>

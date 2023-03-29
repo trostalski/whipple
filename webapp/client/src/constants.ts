@@ -325,3 +325,6 @@ export const resourceOptions: any = [
   { value: "VerificationResult", label: "VerificationResult" },
   { value: "VisionPrescription", label: "VisionPrescription" },
 ];
+
+export const workspaceIdString = "workspaceId";
+export const apiV1 = "api/v1";

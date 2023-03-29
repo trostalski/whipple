@@ -12,10 +12,15 @@ import { toastSuccess } from "../toasts";
 import DashboardBarChart from "./DashboardBarChart";
 import DashboardLineChart from "./DashboardLineChart";
 import DashboardBoxplotChart from "./DashboardBoxplotChart";
-import CardModal from "./CardModal";
+import DashboardCardModal from "./DashboardCardModal";
+import { apiV1, workspaceIdString } from "../../constants";
+import { OptionType } from "../../types";
+import { Dataset, useDatasets } from "../../hooks/useDatasets";
+import { useWorkspaceIds } from "../../hooks/useWorkspaceIds";
+import { useDistinctObservationNames } from "../../hooks/useDistinctObservationNames";
 
 interface DashboardCardProps {
-  card: DashboardCardInfo;
+  cardData: DashboardCardInfo;
 }
 
 const CardChart = (chartType: string, data: DashboardCardData) => {
@@ -34,20 +39,81 @@ const CardChart = (chartType: string, data: DashboardCardData) => {
   }
 };
 
+export const getSpecimenOptions = (
+  content: string,
+  distincObservationNames: string[] | undefined
+) => {
+  let result: OptionType[] = [{ value: "", label: "" }];
+
+  if (!distincObservationNames) return result;
+
+  if (content === "Observation") {
+    result = distincObservationNames
+      .sort((a, b) => (a > b ? 1 : -1))
+      .map((name) => {
+        return { value: name, label: name };
+      });
+  }
+  return result;
+};
+
+export const getTargetOptions = (
+  subject: string,
+  datasets: Dataset[] | undefined,
+  patientIds: string[] | undefined
+) => {
+  let result: OptionType[] = [{ value: "", label: "" }];
+
+  if (!datasets || !patientIds) return result;
+
+  if (subject === "dataset") {
+    console.log(datasets);
+    result = datasets.map((dataset) => {
+      return { value: dataset.id, label: dataset.title };
+    });
+  } else if (subject === "patient") {
+    result = patientIds.map((patientId) => {
+      return { value: patientId, label: patientId };
+    });
+  }
+  return result;
+};
+
 const DashboardCard = (props: DashboardCardProps) => {
-  const workspaceId = localStorage.getItem("workspaceId");
-  const [showMenu, setShowMenu] = React.useState(false);
+  const workspaceId = localStorage.getItem(workspaceIdString);
   const queryClient = useQueryClient();
+  const [showMenu, setShowMenu] = React.useState(false);
   const [cardModalIsOpen, setCardModalIsOpen] = React.useState(false);
+
+  const { data: datasets } = useDatasets(workspaceId!);
+  const { data: patientIds } = useWorkspaceIds(workspaceId!, "Patient");
+
+  const { data: distinctObservationNames } = useDistinctObservationNames(
+    workspaceId!
+  );
+
+  let targetOptions, specimenOptions;
+
+  targetOptions = getTargetOptions(
+    props.cardData.subject,
+    datasets,
+    patientIds
+  );
+
+  specimenOptions = getSpecimenOptions(
+    props.cardData.content,
+    distinctObservationNames
+  );
+
   const { data, isError, isLoading } = useDashboardCardDataset(
     workspaceId!,
-    props.card.id
+    props.cardData.id
   );
 
   const { mutate: deleteMutate } = useMutation(
     () => {
       return axios.delete(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/workspaces/${workspaceId}/dashboard_cards/${props.card.id}`
+        `${process.env.REACT_APP_SERVER_URL}/${apiV1}/workspaces/${workspaceId}/dashboard_cards/${props.cardData.id}`
       );
     },
     {
@@ -75,8 +141,8 @@ const DashboardCard = (props: DashboardCardProps) => {
       }}
     >
       <div className="w-48 pl-2 pt-2">
-        <h3 className="text-lg">{props.card.title}</h3>
-        <p className="text-gray-400">{props.card.info}</p>
+        <h3 className="text-lg">{props.cardData.title}</h3>
+        <p className="text-gray-400">{props.cardData.info}</p>
       </div>
       <div className="flex flex-col justify-center items-center">
         {!data || data.datasets.length === 0 ? (
@@ -84,7 +150,7 @@ const DashboardCard = (props: DashboardCardProps) => {
             <p className="text-gray-400">No Data Found.</p>
           </div>
         ) : (
-          CardChart(props.card.chart_type, data!)
+          CardChart(props.cardData.chart_type, data!)
         )}
       </div>
       <div className="p-4" onClick={(e) => e.stopPropagation()}>
@@ -128,11 +194,13 @@ const DashboardCard = (props: DashboardCardProps) => {
         </div>
       </div>
       {cardModalIsOpen ? (
-        <CardModal
+        <DashboardCardModal
           setShow={setCardModalIsOpen}
           mode="edit"
-          inputData={props.card}
-          cardId={props.card.id}
+          inputData={props.cardData}
+          cardId={props.cardData.id}
+          targetOptions={targetOptions}
+          specimenOptions={specimenOptions}
         />
       ) : null}
     </div>

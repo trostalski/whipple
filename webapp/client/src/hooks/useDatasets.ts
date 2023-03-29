@@ -10,9 +10,13 @@ export type Dataset = {
 };
 
 function fetchDatasets(workspaceId: string) {
-  return fetcher(
+  const result = fetcher(
     `${process.env.REACT_APP_SERVER_URL}/api/v1/workspaces/${workspaceId}/datasets/`
   );
+  if (!result) {
+    return [];
+  }
+  return result;
 }
 
 export function useDatasets(workspaceId: string) {

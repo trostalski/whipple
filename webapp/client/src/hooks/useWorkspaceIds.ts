@@ -7,13 +7,17 @@ export function fetchWorkspaceIds(
   limit: number
 ) {
   const limitStr = limit.toString();
-  return fetcher(
+  const result = fetcher(
     `${process.env.REACT_APP_SERVER_URL}/api/v1/workspaces/${workspaceId}/resourceids`,
     {
       resourcetype: resourceType,
       limit: limitStr,
     }
   );
+  if (!result) {
+    return [];
+  }
+  return result;
 }
 
 export function useWorkspaceIds(

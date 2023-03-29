@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { fetcher } from "../api/fetcher";
-import { InputData } from "../components/dashboard/CardModal";
+import { InputData } from "../components/dashboard/DashboardCardModal";
 
 export type DashboardCardInfo = InputData & {
   id: string;

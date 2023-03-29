@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import Select from "react-select";
+import { workspaceIdString } from "../../constants";
 import { useDatasets } from "../../hooks/useDatasets";
 import { useDistinctObservationNames } from "../../hooks/useDistinctObservationNames";
 import { useWorkspaceIds } from "../../hooks/useWorkspaceIds";
@@ -13,45 +14,42 @@ import {
   contentOptions,
   avaliableChartTypes,
 } from "./constants";
+import { getTargetOptions } from "./DashboardCard";
 import { cardInputIsValid } from "./utils";
 
-interface CardModalProps {
+interface DashboardCardModalProps {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   inputData: InputData;
   mode: "create" | "edit";
+  targetOptions: OptionType[];
+  specimenOptions: OptionType[];
   cardId?: string;
 }
 
 export type InputData = {
   title: string;
   info: string;
-  subject: string;
+  subject: "dataset" | "patient";
   targets: string[];
   content: string;
   specimen: string;
   chart_type: string;
 };
 
-const CardModal = (props: CardModalProps) => {
-  const workspaceId = localStorage.getItem("workspaceId");
+const DashboardCardModal = (props: DashboardCardModalProps) => {
+  const workspaceId = localStorage.getItem(workspaceIdString);
   const queryClient = useQueryClient();
   const [inputData, setInputData] = React.useState<InputData>(props.inputData);
-  const [targetOptions, setTargetOptions] = React.useState<OptionType[]>([]);
-  const [specimenOptions, setSpecimenOptions] = React.useState<OptionType[]>([
-    { value: "", label: "" },
-  ]);
 
-  const {
-    data: patientIds,
-    isLoading: patientIdsLoading,
-    error: patientIdsError,
-  } = useWorkspaceIds(workspaceId!, "Patient");
+  const [targetOptions, setTargetOptions] = React.useState<OptionType[]>(
+    props.targetOptions
+  );
+  const [specimenOptions, setSpecimenOptions] = React.useState<OptionType[]>(
+    props.specimenOptions
+  );
 
-  const {
-    data: datasets,
-    isLoading: datasetsLoading,
-    error: datasetsError,
-  } = useDatasets(workspaceId!);
+  const { data: patientIds } = useWorkspaceIds(workspaceId!, "Patient");
+  const { data: datasets } = useDatasets(workspaceId!);
 
   const handleChange = (
     e:
@@ -64,7 +62,7 @@ const CardModal = (props: CardModalProps) => {
   const { mutate: createMutate, data: createData } = useMutation(
     () => {
       const data = axios.post<ServerPostResponse>(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/workspaces/${workspaceId}/dashboard_cards/`,
+        `${process.env.REACT_APP_SERVER_URL}/${workspaceIdString}/workspaces/${workspaceId}/dashboard_cards/`,
         inputData
       );
       return data;
@@ -108,22 +106,11 @@ const CardModal = (props: CardModalProps) => {
   // set target options
   useEffect(() => {
     const subject = inputData.subject;
-    let targetOptions: OptionType[] = [];
-    if (subject === "dataset") {
-      if (datasets === undefined) return;
-      targetOptions = datasets.map((dataset) => {
-        return { value: dataset.id, label: dataset.title };
-      });
-    } else if (subject === "patient") {
-      if (patientIds === undefined) return;
-      targetOptions = patientIds.map((patientId) => {
-        return { value: patientId, label: patientId };
-      });
-    }
+    const targetOptions = getTargetOptions(subject, datasets!, patientIds!);
     if (targetOptions.length > 0) {
       setTargetOptions(targetOptions!);
     }
-  }, [, inputData.subject, datasets, patientIds]);
+  }, [inputData.subject, datasets, patientIds]);
 
   // set specimen options
   useEffect(() => {
@@ -131,16 +118,14 @@ const CardModal = (props: CardModalProps) => {
     let specimenOptions: OptionType[] = [];
     if (content === "Observation") {
       if (distinctObservationNames === undefined) return;
-      specimenOptions = distinctObservationNames
-        ?.sort((a, b) => (a > b ? 1 : -1))
-        .map((name) => {
-          return { value: name, label: name };
-        });
+      specimenOptions = distinctObservationNames.map((name) => {
+        return { value: name, label: name };
+      });
     }
     if (specimenOptions.length > 0) {
       setSpecimenOptions(specimenOptions!);
     }
-  }, [, inputData.content]);
+  }, [inputData.content]);
 
   const handleCreate = () => {
     if (cardInputIsValid(inputData)) {
@@ -153,7 +138,8 @@ const CardModal = (props: CardModalProps) => {
       updateMutate();
     }
   };
-
+  console.log(targetOptions);
+  console.log(inputData);
   return (
     <ModalWrapper setShow={props.setShow}>
       <div className="flex flex-col h-full gap-6">
@@ -204,7 +190,7 @@ const CardModal = (props: CardModalProps) => {
               name="targets"
               options={targetOptions}
               defaultValue={targetOptions.filter((option) =>
-                inputData.targets.includes(option.value)
+                inputData.targets.includes(option.value.toString())
               )}
               onChange={(e: any) =>
                 setInputData({
@@ -307,4 +293,4 @@ const CardModal = (props: CardModalProps) => {
   );
 };
 
-export default CardModal;
+export default DashboardCardModal;

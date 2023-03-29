@@ -1,6 +1,7 @@
 import { useQuery } from "react-query";
 import { fetcher } from "../api/fetcher";
 import { Resource } from "fhir/r4";
+import { apiV1 } from "../constants";
 
 export interface ConnectionData {
   connections: Resource[]; // list of fhir resources
@@ -14,7 +15,7 @@ export function fetchConnections(
   includeEdges: boolean
 ) {
   return fetcher(
-    `${process.env.REACT_APP_SERVER_URL}/api/v1/workspaces/${workspaceId}/resources/${resourceType}/${resourceId}/connections`,
+    `${process.env.REACT_APP_SERVER_URL}/${apiV1}/workspaces/${workspaceId}/resources/${resourceType}/${resourceId}/connections`,
     { include_edges: includeEdges }
   );
 }

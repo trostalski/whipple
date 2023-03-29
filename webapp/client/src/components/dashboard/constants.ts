@@ -17,13 +17,16 @@ export const contentOptions = [
 export const subjectOptions = [
   { value: "patient", label: "Single Patients" },
   { value: "dataset", label: "Datasets" },
-];
+] as { value: "patient" | "dataset"; label: string }[];
+
+export const defaultTargetOptions = [{ value: "", label: "" }];
+export const defaultSpecimentOptions = [{ value: "", label: "" }];
 
 export const defaultInputData = {
   title: "",
   info: "",
   subject: subjectOptions[0].value,
-  targets: [""],
+  targets: [],
   content: contentOptions[0].value,
   specimen: "",
   chart_type: "",

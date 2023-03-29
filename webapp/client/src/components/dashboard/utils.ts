@@ -1,5 +1,5 @@
 import { toastError } from "../toasts";
-import { InputData } from "./CardModal";
+import { InputData } from "./DashboardCardModal";
 
 export const generateColorPallete = (size: number) => {
   const colors = [];
