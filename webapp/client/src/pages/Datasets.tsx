@@ -104,7 +104,7 @@ const Datasets = () => {
           <div className="relative">
             <button
               data-dropdown-toggle="dropdown"
-              className="bg-blue-500 shadow-md rounded-md py-2 px-6 hover:bg-blue-700 text-white"
+              className="bg-blue-500 w-48 shadow-md rounded-md py-2 px-6 hover:bg-blue-700 text-white"
               onClick={(e) => {
                 e.stopPropagation();
                 setshowDropDown(!showDropDown);

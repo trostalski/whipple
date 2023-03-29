@@ -84,7 +84,7 @@ const Workspaces = () => {
           </div>
           <div className="flex flex-col gap-4 overflow-scroll h-full">
             {data?.length == 0 ? (
-              <div className="flex h-20 flex-row p-4 items-center bg-white shadow-md rounded-xl">
+              <div className="flex h-12 flex-row p-4 items-center bg-white text-gray-400 shadow-md rounded-xl">
                 No Workspaces
               </div>
             ) : (
