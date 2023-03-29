@@ -7,6 +7,7 @@ class ObservationData(BaseModel):
     display: Optional[str] = None
     unit: Optional[str] = None
     date: Optional[str] = None
+    value_type: Optional[str] = None
     patient_id: str
     dataset_id: int
 

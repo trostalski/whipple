@@ -1,16 +1,29 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import React, { useRef } from "react";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale
+} from "chart.js";
 import { Chart } from "react-chartjs-2";
 import { DashboardCardData } from "../../hooks/useDashboardCardDataset";
-import { generateColorPallete, isNonEmptyObject } from "./utils";
+import { generateColorPallete } from "./utils";
 import {
   BoxPlotController,
   BoxAndWiskers,
 } from "@sgratzl/chartjs-chart-boxplot";
-import { isObject } from "vis-util/esnext";
 
-ChartJS.register(ArcElement, Tooltip, Legend, BoxPlotController, BoxAndWiskers);
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  BoxPlotController,
+  BoxAndWiskers,
+  CategoryScale,
+  LinearScale
+);
 
 interface DashboardBoxplotChartProps {
   data: DashboardCardData;
@@ -24,7 +37,7 @@ const DashboardBoxplotChart = (props: DashboardBoxplotChartProps) => {
   data.datasets[0].backgroundColor = generateColorPallete(
     props.data.labels.length
   );
-  console.log(props.data.unit);
+  console.log(data);
   return (
     <div className="">
       <Chart

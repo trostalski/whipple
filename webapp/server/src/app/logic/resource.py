@@ -15,6 +15,7 @@ from app.models.condition_stats import ConditionStats
 from app.models.condition_data import ConditionData
 from app.models.observation_data import ObservationData
 from app.models.observation_stats import ObservationStats
+from app.logic.helper import get_value_type
 
 from .fhir_helper import (
     gather_references,
@@ -122,6 +123,7 @@ def update_observation_stats(
     code = observation.code.coding[0].code
     date = get_date_for_resource(observation.dict())
     value, unit = get_value_and_unit_for_observation(observation)
+    value_type = get_value_type(value)
     if not value:
         return
     db.add(
@@ -132,6 +134,7 @@ def update_observation_stats(
             code=code,
             date=date,
             value=value,
+            value_type=value_type,
             unit=unit,
             patient_id=patient_id,
         )

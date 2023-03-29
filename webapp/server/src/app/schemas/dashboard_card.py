@@ -33,9 +33,11 @@ class DashboardCardIn(DashboardCardBase):
     class Config:
         use_enum_values = True
 
+
 class DashboardCardUpdate(DashboardCardBase):
     id: int
     created_at: datetime
+
     class Config:
         use_enum_values = True
 
@@ -54,7 +56,7 @@ class ChartJSDatasets(BaseModel):
     unit: Optional[str] = None
 
 
-class DashboardConditionData():
+class DashboardConditionData:
     pass
 
 

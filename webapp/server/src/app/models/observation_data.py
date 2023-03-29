@@ -17,6 +17,7 @@ class ObservationData(Base):
     display = Column(String, nullable=True)
     unit = Column(String, nullable=True)
     date = Column(String, nullable=True)
+    value_type = Column(String, nullable=True)
     patient_id = Column(String, nullable=False)
     dataset_id = Column(Integer, ForeignKey("datasets.id", ondelete="CASCADE"))
     workspace_id = Column(Integer, ForeignKey("workspaces.id", ondelete="CASCADE"))
