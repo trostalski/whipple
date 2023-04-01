@@ -12,3 +12,4 @@ def get_value_type(value: str) -> str:
     elif isinstance(value, float):
         return "numeric"
     return "categorical"
+

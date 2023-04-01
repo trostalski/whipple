@@ -20,6 +20,9 @@ from fhir.resources.explanationofbenefit import ExplanationOfBenefit
 
 from .constants import RESOURCE_LIST
 
+def is_bundle(resource: dict) -> bool:
+    """Checks if the provided resource is a bundle"""
+    return "entry" in resource
 
 def get_references_generator(input: Iterable) -> Generator[Reference, None, None]:
     """Returns a generator for all values in a dictionary of the specified key.
