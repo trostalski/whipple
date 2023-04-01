@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import Select from "react-select";
-import { workspaceIdString } from "../../constants";
+import { apiV1, workspaceIdString } from "../../constants";
 import { useDatasets } from "../../hooks/useDatasets";
 import { useDistinctObservationNames } from "../../hooks/useDistinctObservationNames";
 import { useWorkspaceIds } from "../../hooks/useWorkspaceIds";
@@ -62,7 +62,7 @@ const DashboardCardModal = (props: DashboardCardModalProps) => {
   const { mutate: createMutate, data: createData } = useMutation(
     () => {
       const data = axios.post<ServerPostResponse>(
-        `${process.env.REACT_APP_SERVER_URL}/${workspaceIdString}/workspaces/${workspaceId}/dashboard_cards/`,
+        `${process.env.REACT_APP_SERVER_URL}/${apiV1}/workspaces/${workspaceId}/dashboard_cards/`,
         inputData
       );
       return data;
@@ -82,7 +82,7 @@ const DashboardCardModal = (props: DashboardCardModalProps) => {
   const { mutate: updateMutate, data: updateData } = useMutation(
     () => {
       const data = axios.post<ServerPostResponse>(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/workspaces/${workspaceId}/dashboard_cards/${props.cardId}`,
+        `${process.env.REACT_APP_SERVER_URL}/${apiV1}/workspaces/${workspaceId}/dashboard_cards/${props.cardId}`,
         inputData
       );
       return data;
@@ -138,8 +138,6 @@ const DashboardCardModal = (props: DashboardCardModalProps) => {
       updateMutate();
     }
   };
-  console.log(targetOptions);
-  console.log(inputData);
   return (
     <ModalWrapper setShow={props.setShow}>
       <div className="flex flex-col h-full gap-6">
@@ -199,6 +197,14 @@ const DashboardCardModal = (props: DashboardCardModalProps) => {
                 })
               }
               placeholder={inputData.subject}
+              styles={{
+                control: (provided) => ({
+                  ...provided,
+                  minHeight: "40px",
+                  maxHeight: "100px",
+                  overflow: "scroll",
+                }),
+              }}
             ></Select>
           </div>
         </div>

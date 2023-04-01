@@ -8,7 +8,6 @@ import DashboardCardModal from "../components/dashboard/DashboardCardModal";
 import DashboardCard from "../components/dashboard/DashboardCard";
 import Wrapper from "../components/Wrapper";
 import { useDashboardCards } from "../hooks/useDashboardCards";
-import { useDistinctObservationNames } from "../hooks/useDistinctObservationNames";
 
 const Dashboard = () => {
   const [cardModalIsOpen, setCardModalIsOpen] = React.useState(false);

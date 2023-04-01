@@ -37,7 +37,6 @@ const DashboardBoxplotChart = (props: DashboardBoxplotChartProps) => {
   data.datasets[0].backgroundColor = generateColorPallete(
     props.data.labels.length
   );
-  console.log(data);
   return (
     <div className="">
       <Chart
