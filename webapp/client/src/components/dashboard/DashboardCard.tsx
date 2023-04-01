@@ -67,7 +67,6 @@ export const getTargetOptions = (
   if (!datasets || !patientIds) return result;
 
   if (subject === "dataset") {
-    console.log(datasets);
     result = datasets.map((dataset) => {
       return { value: dataset.id, label: dataset.title };
     });

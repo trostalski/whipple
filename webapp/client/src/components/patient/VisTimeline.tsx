@@ -38,7 +38,6 @@ const VisTimeline = (props: VisTimelineProps) => {
         zoomKey: "shiftKey",
       });
       timeline.on("click", function (properties) {
-        console.log(properties);
         if (properties.item) {
           setSelectedItem(properties.item);
         } else if (properties.item == null) {

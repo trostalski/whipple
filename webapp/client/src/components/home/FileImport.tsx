@@ -40,7 +40,6 @@ const FileImport = (props: FileImportProps) => {
     },
     {
       onSuccess: () => {
-        console.log("invalidating queries");
         queryClient.invalidateQueries("datasets");
       },
     }

@@ -24,7 +24,6 @@ const Login = () => {
       toastError("Invalid username or password.");
     },
     onSuccess: (data) => {
-      console.log(data);
       navigate("/workspaces");
     },
   });

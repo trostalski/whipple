@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarController, BarElement } from "chart.js";
 import { DashboardCardData } from "../../hooks/useDashboardCardDataset";
 import { generateColorPallete } from "./utils";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, BarController, BarElement);
 
 interface DashboardBarChartProps {
   data: DashboardCardData;
@@ -17,7 +17,9 @@ const DashboardBarChart = (props: DashboardBarChartProps) => {
 
   useEffect(() => {
     const labels = props.data.labels.filter((_, i) => i < dataRange);
-    const data = props.data.datasets[0].data.filter((_, i) => i < dataRange).sort((a, b) => b-a);
+    const data = props.data.datasets[0].data
+      .filter((_, i) => i < dataRange)
+      .sort((a, b) => b - a);
     const colors = generateColorPallete(labels.length);
     setData({
       labels,
@@ -30,7 +32,6 @@ const DashboardBarChart = (props: DashboardBarChartProps) => {
       ],
     });
   }, [dataRange]);
-  console.log(data);
   return (
     <>
       <div className="">

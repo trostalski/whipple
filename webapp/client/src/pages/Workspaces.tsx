@@ -109,7 +109,7 @@ const Workspaces = () => {
                   >
                     {editId == workspace.id ? (
                       <input
-                        className="text-md w-3/4 h-8 border-2 rounded-md focus:outline-blue-500"
+                        className="text-md w-full h-8 border-2 rounded-md focus:outline-blue-500"
                         value={workspaceName}
                         onClick={(e) => e.stopPropagation()}
                         onChange={(e) => setWorkspaceName(e.target.value)}
