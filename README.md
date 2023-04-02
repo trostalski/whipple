@@ -54,4 +54,4 @@ npm run start
 
 ### Contributing
 
-Contributions of all kinds are very much welcome.
+Contributions of all kinds are welcome.
