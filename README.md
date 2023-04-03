@@ -1,6 +1,6 @@
 # Whipple
 
-**This project is under development!**
+**This project is under development**
 
 Whipple is a project that provides introspection into FHIR data. It allows you to explore and analyze FHIR data in a user-friendly way, giving you insight into the structure and content of the data.
 
