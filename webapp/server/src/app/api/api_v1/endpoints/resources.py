@@ -112,6 +112,13 @@ def create_bundle_with_dataset(
     Create new resource.
     """
     bundle = Bundle(**bundle)
+    db_dataset = logic.dataset.try_create_dataset(
+        db, dataset_in=dataset, workspace_id=workspace_id
+    )
+    if not db_dataset:
+        raise HTTPException(
+            status_code=404, detail="Error when trying to create the dataset."
+        )
     logic.resource.create_bundle_with_dataset(
         db, bundle_in=bundle, dataset_in=dataset, workspace_id=workspace_id
     )

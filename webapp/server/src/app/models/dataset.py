@@ -9,7 +9,7 @@ from app.models.resource import Resource
 class Dataset(Base):
     __tablename__ = "datasets"
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, nullable=True, unique=True, default="")
+    title = Column(String, nullable=True, default="")
     description = Column(String, nullable=True, default="")
     size = Column(Integer, nullable=True, default=0)
     created_at = Column(DateTime, server_default=func.now())

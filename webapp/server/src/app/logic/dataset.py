@@ -26,7 +26,7 @@ def try_create_dataset(db: Session, dataset_in: DatasetIn, workspace_id: int):
     """Try to create a dataset. If it already exists, return the existing dataset."""
     try:
         return create_dataset(db, dataset_in, workspace_id)
-    except (exc.IntegrityError, UniqueViolation):
+    except (exc.IntegrityError, UniqueViolation) as e:
         db.rollback()
         return get_dataset_by_title(db, dataset_in.title, workspace_id)
 
