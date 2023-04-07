@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 import alembic.config
 from sqlalchemy import text
+from sqlalchemy.exc import ProgrammingError
 
 from app.api.api_v1.api import api_router
 from app.core.config import settings
@@ -16,7 +17,7 @@ app = FastAPI(
 try:
     db = SessionLocal()
     db.execute(text("SELECT 1 FROM users"))
-except Exception as e:
+except (ProgrammingError ,Exception):
     alembic.config.main(argv=["revision", "--autogenerate", "-m", "'init'"])
     alembic.config.main(argv=["upgrade", "head"])
     db.execute(text("DELETE FROM alembic_version"))
