@@ -50,8 +50,8 @@ class DashboardCardOut(DashboardCardBase):
 
 
 class ChartJSDatasets(BaseModel):
-    labels: list[str]
-    datasets: list[dict[str, Any]]
+    labels: Optional[list[str]]
+    datasets: Optional[list[dict[str, Any]]]
     unit: Optional[str] = None
 
 
