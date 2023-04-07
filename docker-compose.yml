@@ -9,6 +9,8 @@ services:
       context: ./whipple/client
     ports:
       - 3000:3000
+    depends_on:
+      - backend
   db:
     image: postgres
     env_file:

@@ -47,8 +47,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "generate-client": "openapi --input http://localhost:8000/api/v1/openapi.json --output ./src/gen --client axios"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
