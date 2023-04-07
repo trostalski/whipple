@@ -22,7 +22,13 @@ The interface should now be available at [http://localhost:3000](http://localhos
 
 **backend**:
 
-Navigate to the [server directory](./webapp/server) and and create a virtual environment. Activate the environment and install the dependenices from the `requirements.txt`.
+Start the postgres database inside a docker container by running:
+
+```shell
+docker-compose -f docker/compose-postgres.yml up
+```
+
+Navigate to the [server directory](./whipple/server) and and create a virtual environment. Activate the environment and install the dependenices from the `requirements.txt`.
 
 Move to the `src` directory and start the [fast-api](https://fastapi.tiangolo.com/) backend:
 
@@ -30,15 +36,9 @@ Move to the `src` directory and start the [fast-api](https://fastapi.tiangolo.co
 uvicorn app.main:main --host 0.0.0.0 --port 8000 --reload
 ```
 
-Start the postgres database inside a docker container by running:
-
-```shell
-docker-compose up
-```
-
 **frontend**:
 
-Navigate to the [client](./webapp/client) directory.
+Navigate to the [client](./whipple/client) directory.
 
 Install the dependencies:
 
@@ -52,6 +52,10 @@ Start the [React](https://react.dev/) frontend:
 npm run start
 ```
 
-### Contributing
+## Features
+
+
+
+## Contributing
 
 Contributions of all kinds are welcome.
