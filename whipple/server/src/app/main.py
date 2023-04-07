@@ -20,6 +20,7 @@ except Exception as e:
     alembic.config.main(argv=["revision", "--autogenerate", "-m", "Initial migration"])
     alembic.config.main(argv=["upgrade", "head"])
     print("Database tables created")
+    db.execute(text("DELETE FROM alembic_version;"))
 
 
 # Set all CORS enabled origins
