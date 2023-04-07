@@ -11,18 +11,6 @@ app = FastAPI(
     title=settings.PROJECT_NAME, openapi_url=f"{settings.API_V1_STR}/openapi.json"
 )
 
-# create database tables if not exists
-try:
-    db = SessionLocal()
-    db.execute(text("SELECT 1 from users LIMIT 1"))
-except Exception as e:
-    print("Database tables not created yet, creating them now...")
-    alembic.config.main(argv=["revision", "--autogenerate", "-m", "Initial migration"])
-    alembic.config.main(argv=["upgrade", "head"])
-    print("Database tables created")
-    db.execute(text("DELETE FROM alembic_version;"))
-
-
 # Set all CORS enabled origins
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(
