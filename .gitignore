@@ -1,0 +1,22 @@
+# client
+node_modules
+
+# server
+__pycache__
+**/*_i.py
+**/similarity/*
+**/*.ipynb_checkpoints
+**/*.ipynb
+
+# big data files
+downloads
+
+# environment
+venv
+
+# builds
+dist
+
+# old, unused
+**/tmp/
+old
