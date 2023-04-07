@@ -194,7 +194,6 @@ def get_observation_data_for_boxplot(
                 if d.value is not None and d.value_type == ValueTypes.numeric
             ]
         )
-        print(values)
         if len(values) == 0:
             datasets[0]["data"].append({})
             continue
