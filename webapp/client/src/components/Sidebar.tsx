@@ -106,7 +106,7 @@ const Sidebar = () => {
           >
             <GrAnalytics size={"20"} />
             <span className="flex-1 ml-3 whitespace-nowrap">Analytics</span>
-          </Link>
+          </Link> */}
           <Link
             to={"/exports"}
             className="flex p-2 items-center text-xs text-left text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -114,7 +114,7 @@ const Sidebar = () => {
             <CiExport size={"24"} />
             <span className="flex-1 ml-3 whitespace-nowrap">Export</span>
           </Link>
-          <Link
+          {/* <Link
             to={"/settings"}
             className="flex p-2 items-center text-xs text-left text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >

@@ -1,10 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+} from "chart.js";
 import { DashboardCardData } from "../../hooks/useDashboardCardDataset";
 import { generateColorPallete } from "./utils";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale);
 
 interface DashboardPieChartProps {
   data: DashboardCardData;

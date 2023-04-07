@@ -1,10 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarController, BarElement } from "chart.js";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  BarController,
+  BarElement,
+  CategoryScale,
+} from "chart.js";
 import { DashboardCardData } from "../../hooks/useDashboardCardDataset";
 import { generateColorPallete } from "./utils";
 
-ChartJS.register(ArcElement, Tooltip, Legend, BarController, BarElement);
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  BarController,
+  BarElement,
+  CategoryScale
+);
 
 interface DashboardBarChartProps {
   data: DashboardCardData;

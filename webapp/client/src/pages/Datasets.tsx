@@ -14,7 +14,6 @@ interface ImportDataModalProps {
 
 const Datasets = () => {
   const [showDatasetImportModal, setShowDatasetImportModal] = useState(false);
-  const [importMethod, setImportMethod] = useState<string>("");
   const queryClient = useQueryClient();
   const workspaceId = localStorage.getItem("workspaceId");
   const { isLoading, error, data } = useDatasets(workspaceId!);
