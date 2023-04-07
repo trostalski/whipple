@@ -11,6 +11,19 @@ app = FastAPI(
     title=settings.PROJECT_NAME, openapi_url=f"{settings.API_V1_STR}/openapi.json"
 )
 
+
+# initialize database
+try:
+    db = SessionLocal()
+    db.execute(text("SELECT 1 FROM users"))
+except Exception as e:
+    alembic.config.main(argv=["revision", "--autogenerate", "-m", "'init'"])
+    alembic.config.main(argv=["upgrade", "head"])
+    db.execute(text("DELETE FROM alembic_version"))
+    db.rollback()
+    print("Database initialized")
+    
+
 # Set all CORS enabled origins
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(
