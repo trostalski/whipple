@@ -17,13 +17,14 @@ app = FastAPI(
 try:
     db = SessionLocal()
     db.execute(text("SELECT 1 FROM users"))
-except (ProgrammingError ,Exception):
-    alembic.config.main(argv=["revision", "--autogenerate", "-m", "'init'"])
+except Exception as e:
+    alembic.config.main(argv=["revision", "--autogenerate", "-m", "init"])
     alembic.config.main(argv=["upgrade", "head"])
-    db.execute(text("DELETE FROM alembic_version"))
-    db.rollback()
     print("Database initialized")
-    
+finally:
+    print("####### deleting alembic_version #######")
+    db.execute(text("DELETE FROM alembic_version;"))
+
 
 # Set all CORS enabled origins
 if settings.BACKEND_CORS_ORIGINS:
