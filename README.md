@@ -4,9 +4,14 @@
 
 Whipple is a project that provides introspection into FHIR data. It allows you to explore and analyze FHIR data in a user-friendly way, giving you insight into the structure and content of the data.
 
-## Getting started with [Docker](https://www.docker.com/)
+## Getting started ([Docker](https://www.docker.com/))
 
-Clone the project into a local directory using `git clone`.
+Clone the project into a local directory using:
+
+```shell
+git clone https://github.com/trostalski/whipple.git
+cd whipple
+```
 
 Make sure you have Docker installed and running, then execute the following command in the root directory to spin up all docker containers:
 
@@ -29,7 +34,7 @@ The interface should now be available at [http://localhost:3000](http://localhos
 <img src="assets/patient_network.png" width=70% height=70%>
 <img src="assets/patient_timeline.png" width=70% height=70%>
 
-### Build
+## Build
 
 **backend**:
 
@@ -62,10 +67,6 @@ Start the [React](https://react.dev/) frontend:
 ```shell
 npm run start
 ```
-
-## Features
-
-
 
 ## Contributing
 
