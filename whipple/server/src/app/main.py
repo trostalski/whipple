@@ -18,11 +18,12 @@ try:
     db = SessionLocal()
     db.execute(text("SELECT 1 FROM users"))
 except Exception as e:
+    db.rollback
     alembic.config.main(argv=["revision", "--autogenerate", "-m", "init"])
     alembic.config.main(argv=["upgrade", "head"])
     print("Database initialized")
 finally:
-    print("####### deleting alembic_version #######")
+    print("deleting alembic_version")
     db.execute(text("DELETE FROM alembic_version;"))
 
 
