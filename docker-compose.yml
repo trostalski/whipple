@@ -28,6 +28,8 @@ services:
     container_name: server
     env_file:
       - ./.env
+    volumes:
+      - ./whipple/server/src/alembic:/src/alembic
     depends_on:
       db:
         condition: service_healthy

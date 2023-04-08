@@ -18,7 +18,7 @@ try:
     db = SessionLocal()
     db.execute(text("SELECT 1 FROM users"))
 except Exception as e:
-    db.rollback
+    db.rollback()
     alembic.config.main(argv=["revision", "--autogenerate", "-m", "init"])
     alembic.config.main(argv=["upgrade", "head"])
     print("Database initialized")
